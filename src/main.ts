@@ -1,4 +1,4 @@
-import {vec3} from 'gl-matrix';
+import {vec3, vec4} from 'gl-matrix';
 import * as Stats from 'stats-js';
 import * as DAT from 'dat-gui';
 import Icosphere from './geometry/Icosphere';
@@ -18,7 +18,7 @@ const controls = {
   iterations: 1,
   tesselations: 5,
   axiom: "FFFX",
-  'Update Tree': loadScene, // A function pointer, essentially
+  'Reload City': loadScene, // A function pointer, essentially
 };
 
 let icosphere: Icosphere;
@@ -52,10 +52,10 @@ function main() {
   // Add controls to the gui
   const gui = new DAT.GUI();
   gui.add(controls, 'tesselations', 0, 8).step(1);
-  gui.add(controls, 'Update Tree');
-  gui.add(controls, 'angle', 0, .6);
-  gui.add(controls, 'iterations', 0, 6).step(1);
-  gui.add(controls, 'axiom');
+  gui.add(controls, 'Reload City');
+  //gui.add(controls, 'angle', 0, .6);
+  gui.add(controls, 'iterations', 0, 5).step(1);
+  //gui.add(controls, 'axiom');
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -88,8 +88,11 @@ function main() {
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
     renderer.render(camera, lambert, [
-      plane, city
-    ]);
+      plane, 
+    ], vec4.fromValues(0, 1, 0, 1));
+    renderer.render(camera, lambert, [
+      city, 
+    ], vec4.fromValues(.7, .7, .7, 1));
     stats.end();
 
     // Tell the browser to call `tick` again whenever it renders a new frame
